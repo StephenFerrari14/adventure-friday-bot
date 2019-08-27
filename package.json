@@ -1,0 +1,22 @@
+{
+  "name": "advbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "10.6.0"
+  },
+  "dependencies": {
+    "botbuilder-adapter-slack": "^1.0.4",
+    "botbuilder-storage-mongodb": "^0.9.5",
+    "botkit": "^4.5.0",
+    "botkit-plugin-cms": "^1.0.2",
+    "dotenv": "^7.0.0",
+    "node-json-db": "^1.0.1",
+    "request": "^2.88.0"
+  }
+}
