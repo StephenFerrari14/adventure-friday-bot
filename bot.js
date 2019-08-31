@@ -159,7 +159,7 @@ Message.on('^help$', '', (req, res, headers) => {
         json: true,
         body: {
           text:
-          `To use Adventure bot\nadd - Add a place to adventure list\nlist - List all current suggestions for adventure`,
+          `To use Adventure bot\nadd <query> - Add a place to adventure list\nlist - List all current suggestions for adventure\ndelete <query> - Delete a place in the adventure list`,
           channel: req.body.event.channel
         }
       }
@@ -277,7 +277,7 @@ Message.on('^list$', '', (req, res, headers) => {
         return;
     }
     spotData = spotData.map(spot => {
-        return `<https://www.google.com/maps?q=${spot}+bosston+ma|${spot}>`
+        return `<https://www.google.com/maps?q=${spot}+boston+ma|${spot}>`
     });
     var options = {
         uri: "https://slack.com/api/chat.postMessage",
