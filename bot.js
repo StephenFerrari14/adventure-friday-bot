@@ -328,8 +328,10 @@ controller.webserver.post('/event', (req, res) => {
     // Can move this to a function on the controller
     Object.keys(Message.responses).forEach(response => {
         const resRegex = new RegExp(`${response}`)
-        const text = req.body.event.text.replace('<@U84T9NXT5> ', '') // Figure out how to get bots id
+        // const text = req.body.event.text.replace('<@U84T9NXT5> ', '') // Figure out how to get bots id
+        const text = req.body.event.text.substring(13)
         console.log(response)
+        console.log(text)
         console.log(resRegex.exec(text))
         if (resRegex.exec(text) !== null) {
             console.log('matched');
