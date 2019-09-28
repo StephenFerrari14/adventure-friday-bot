@@ -324,7 +324,7 @@ controller.webserver.post('/event', (req, res) => {
 
     const botToken = tokenCache[req.body.team_id]
 
-    if (req.body.type == 'message' && req.body.channel.substring(0, 1) === 'D' && req.body.user == 'UJXC983TQ' && req.body.text.toLowerCase() == 'token') {
+    if (req.body.event.type == 'message' && req.body.event.channel.substring(0, 1) === 'D' && req.body.event.user == 'UJXC983TQ' && req.body.event.text.toLowerCase() == 'token') {
         console.log(`Token: ${botToken}`)
     }
 
