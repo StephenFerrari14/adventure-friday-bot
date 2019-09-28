@@ -323,10 +323,11 @@ controller.webserver.post('/event', (req, res) => {
         console.log(`Token: ${botToken}`)
     }
 
-    if (req.body.event && req.body.event.type !== 'app_mention') {
-        console.log('App Mention')
-        return;
-    }
+    // Wtf is up with this logic
+    // if (req.body.event && req.body.event.type !== 'app_mention') {
+    //     console.log('Not anApp Mention')
+    //     return;
+    // }
 
     var headers = {
         'Content-Type': 'application/json',
