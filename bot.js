@@ -304,7 +304,7 @@ controller.webserver.post('/event', (req, res) => {
         res.send(req.body.challenge)
     }
 
-    console.log(req.body)
+    console.log(req.body.event)
 
     // Verification token
     if (req.body.token != process.env.signingToken) {
@@ -317,15 +317,15 @@ controller.webserver.post('/event', (req, res) => {
         return;
     }
 
-    if (req.body.event && req.body.event.type !== 'app_mention') {
-        console.log('App Mention')
-        return;
-    }
-
     const botToken = tokenCache[req.body.team_id]
 
     if (req.body.event.type == 'message' && req.body.event.channel.substring(0, 1) === 'D' && req.body.event.user == 'UJXC983TQ' && req.body.event.text.toLowerCase() == 'token') {
         console.log(`Token: ${botToken}`)
+    }
+
+    if (req.body.event && req.body.event.type !== 'app_mention') {
+        console.log('App Mention')
+        return;
     }
 
     var headers = {
