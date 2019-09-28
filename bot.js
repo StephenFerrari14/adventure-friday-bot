@@ -304,10 +304,13 @@ controller.webserver.post('/event', (req, res) => {
         res.send(req.body.challenge)
     }
 
+    console.log(req.body)
+
     // Verification token
-    if (req.body.token == process.env.signingToken) {
-        console.log('Verified');
+    if (req.body.token != process.env.signingToken) {
+        return;
     }
+    console.log('Verified');
 
     if (req.body.event && req.body.event.subtype === 'bot_message' ) {
         console.log('Bot Message')
