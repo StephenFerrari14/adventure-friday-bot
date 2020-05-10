@@ -11,11 +11,4 @@ class MessageController {
   }
 }
 
-// controller = new ResponseController()
-// controller.on('/\w/i', '', function () {
-//   console.log('here');
-// })
-
-// console.log(controller.responses)
-
 module.exports = MessageController;

@@ -39,7 +39,6 @@ const Config = require('node-json-db/dist/lib/JsonDBConfig').Config;
 // The third argument is to ask JsonDB to save the database in an human readable format. (default false)
 // The last argument is the separator. By default it's slash (/)
 var db = new JsonDB(new Config("adventures", true, false, '/'));
-// db.push("/test3", {test:"test", json: {test:["test"]}});
 
 
 const adapter = new SlackAdapter({
@@ -74,33 +73,24 @@ adapter.use(new SlackMessageTypeMiddleware());
 
 const controller = new Botkit({
     webhook_uri: '/api/messages',
-
     adapter: adapter,
-
     storage
 });
 
 controller.webserver.get('/', (req, res) => {
-
     res.send(`This app is running Botkit ${ controller.version }.`);
-
 });
 
 
 controller.webserver.get('/install', (req, res) => {
-    // getInstallLink points to slack's oauth endpoint and includes clientId and scopes
     res.redirect(controller.adapter.getInstallLink());
 });
 
 controller.webserver.get('/install/auth', async (req, res) => {
     try {
         const results = await controller.adapter.validateOauthCode(req.query.code);
-
-        console.log('FULL OAUTH DETAILS', results);
-
         // Store token by team in bot state.
         tokenCache[results.team_id] = results.bot.bot_access_token;
-
         // Capture team to bot id
         userCache[results.team_id] =  results.bot.bot_user_id;
 
@@ -304,8 +294,6 @@ controller.webserver.post('/event', (req, res) => {
         res.send(req.body.challenge)
     }
 
-    console.log(req.body.event)
-
     // Verification token
     if (req.body.token != process.env.signingToken) {
         return;
@@ -318,16 +306,9 @@ controller.webserver.post('/event', (req, res) => {
     }
 
     const botToken = tokenCache[req.body.team_id]
-
-    if (req.body.event.type == 'message' && req.body.event.channel.substring(0, 1) === 'D' && req.body.event.user == 'UJXC983TQ' && req.body.event.text.toLowerCase() == 'token') {
+    if (req.body.event.type == 'message' && req.body.event.channel.substring(0, 1) === 'D' && req.body.event.user == process.env.botId && req.body.event.text.toLowerCase() == 'token') {
         console.log(`Token: ${botToken}`)
     }
-
-    // Wtf is up with this logic
-    // if (req.body.event && req.body.event.type !== 'app_mention') {
-    //     console.log('Not anApp Mention')
-    //     return;
-    // }
 
     var headers = {
         'Content-Type': 'application/json',
@@ -337,11 +318,7 @@ controller.webserver.post('/event', (req, res) => {
     // Can move this to a function on the controller
     Object.keys(Message.responses).forEach(response => {
         const resRegex = new RegExp(`${response}`)
-        // const text = req.body.event.text.replace('<@U84T9NXT5> ', '') // Figure out how to get bots id
         const text = req.body.event.text.substring(13)
-        console.log(response)
-        console.log(text)
-        console.log(resRegex.exec(text))
         if (resRegex.exec(text) !== null) {
             console.log('matched');
             req.messageRegex = resRegex.exec(text)
@@ -349,16 +326,4 @@ controller.webserver.post('/event', (req, res) => {
         }
         console.log('didn\'t match');
     })
-});
-
-controller.webserver.post('/slack/receive', (req, res) => {
-    console.log(req.body)
-    console.log(tokenCache)
-    console.log(userCache)
-});
-
-controller.webserver.post('/slack/options', (req, res) => {
-    console.log(req.body)
-    console.log(tokenCache)
-    console.log(userCache)
 });
